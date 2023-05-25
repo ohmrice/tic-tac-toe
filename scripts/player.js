@@ -1,11 +1,8 @@
-const Player = (name, marker) => {
-    const getName = () => name;
-    const getMarker = () => marker;
-    
-    return { getName, getMarker };
+const Player = (name, marker) => {    
+    return { name, marker };
 };
 
-const playerOne = Player('Player X', 'X');
-const playerTwo = Player('Player O', 'O');
+const playerOne = Player('Billy', 'X');
+const playerTwo = Player('Goat', 'O');
 
 export { playerOne, playerTwo };

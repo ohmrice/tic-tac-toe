@@ -7,7 +7,11 @@ export const displayController = (() => {
                 const cellMark = document.getElementById(`${i}-${j}`);
                 cellMark.textContent = GameBoard.gameArray[i][j];  
             }
-        }
+        }        
     }
-    return { render };
+
+    const displayWinner = (winnerName) => {
+        console.log(`The winner is ${winnerName}!`);
+    }
+    return { render, displayWinner };
 })();
