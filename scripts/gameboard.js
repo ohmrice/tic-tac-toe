@@ -6,7 +6,6 @@ export const GameBoard = (() => {
     let _isTurn = true;
     let _currentPlayer;
 
-
     const gameArray = [
         [null,null,null],
         [null,null,null],
@@ -19,6 +18,8 @@ export const GameBoard = (() => {
         cell.classList.remove('valid-move');
         _checkWin();
     }));
+    const resetBtn = document.getElementById('reset-button');
+    resetBtn.addEventListener('click', _resetGame);
     
     function _checkTurn(cell) {
         if (_isTurn) {
@@ -35,6 +36,7 @@ export const GameBoard = (() => {
         let validPattern = false;
         if (_checkRows() || _checkColumns() || _checkDiagonals()) {
             displayController.displayWinner(_currentPlayer.name);
+            resetBtn.style.visibility = 'visible';
             const validCells = document.querySelectorAll(".valid-move");
             validCells.forEach((cell) => cell.disabled = true);
             return true;
@@ -88,6 +90,25 @@ export const GameBoard = (() => {
         gameArray[i][j] = marker;
         displayController.render();
         cell.disabled = true; 
+    }
+
+    function _resetGame() {
+        _resetValues();
+        resetBtn.style.visibility = 'hidden';
+    }
+
+    function _resetValues() {
+        for (let i = 0; i < GameBoard.gameArray.length; i++) {
+            for (let j = 0; j < GameBoard.gameArray[i].length; j++) {
+                gameArray[i][j] = null;  
+            }
+        }
+        displayController.render();
+        cells.forEach((cell) => {
+            cell.disabled = false;
+            cell.classList.add('valid-move');
+        });
+        _isTurn = true;
     }
     return { gameArray };
 })();
