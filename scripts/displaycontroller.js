@@ -19,5 +19,12 @@ export const displayController = (() => {
             statsText.textContent = `${player}'s turn:`;
         }
     }
-    return { render, displayGameStats };
+    
+    function infoToggle() {
+        const infoContainer = document.querySelector('.info-container');
+        const gameBoard = document.querySelector('.gameboard-container');
+        infoContainer.style.display = "none";
+        gameBoard.style.filter = "none";
+    }
+    return { render, displayGameStats, infoToggle };
 })();

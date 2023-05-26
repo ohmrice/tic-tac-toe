@@ -16,14 +16,21 @@ export const GameBoard = (() => {
     //bind HTML elements
     const cells = document.querySelectorAll(".grid-button");
     const _resetBtn = document.getElementById('reset-button');
+    const _infoBtn = document.getElementById('submit-name');
     const _statsText = document.getElementById('stats-text');
     //add event listeners
     cells.forEach((cell) => cell.addEventListener("click", () => {
         _playGame(cell);
     }));
     _resetBtn.addEventListener('click', _resetGame);
-    //set stats text
-    _statsText.textContent = `${_currentPlayer.name}'s turn`;
+    _infoBtn.addEventListener('click', _submitName);
+    
+    function _submitName() {
+        const playerName = document.getElementById('name-input');
+        playerOne.name = playerName.value;
+        displayController.infoToggle();
+        _statsText.textContent = `${_currentPlayer.name}'s turn`;
+    }
 
     function _playGame(cell) {
         if(_isSinglePlayer) {

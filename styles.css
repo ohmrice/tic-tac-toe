@@ -1,7 +1,7 @@
 html {
+    margin: 0;
     box-sizing: border-box;
-    font-family: 'Ubuntu', sans-serif;
-    
+    font-family: 'Ubuntu', sans-serif;    
 }
 
 :root {
@@ -10,13 +10,53 @@ html {
 }
 
 body {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 100vh;
+}
+
+.info-container {
+    color: white;
+    z-index: 1;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(44, 39, 39, 0.5);
+}
+
+.info-container > *{
+    font-size: 2rem;
+}
+
+.info-container > input {
+    color: white;
+    text-align: center;
+    background-color:rgba(255, 255, 255, 0);
+    border: none;
+    border-bottom: 5px solid white;
+}
+
+.info-container > input:focus {
+    outline: none;
+}
+
+.info-container > button {
+    border-radius: 10px;
+    border: none;
+    padding: 20px;
+    cursor: pointer;
 }
 
 .gameboard-container {
+    filter: blur(9px);
     display: flex;
     align-items: center;
     justify-content: center;
