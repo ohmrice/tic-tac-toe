@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="./scripts/gameboard.js"></script>
+    <script type="module" src="./scripts/displaycontroller.js" defer></script>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/redkost-comic" type="text/css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+    <title>Tic-Tac-Toe</title>
+</head>
+<body>
+        <div class="stats-container">
+            <h2 id="stats-text"></h2>
+        </div>
+        <div class="gameboard-container">
+            <div class="gameboard-grid">
+                <div class="grid-item">
+                    <button type="button" class="grid-button valid-move" id="0-0"></button>
+                </div>
+                <div class="grid-item">
+                    <button type="button" class="grid-button valid-move" id="0-1"></button>
+                </div>
+                <div class="grid-item">
+                    <button type="button" class="grid-button valid-move" id="0-2"></button>
+                </div>
+                <div class="grid-item">
+                    <button type="button" class="grid-button valid-move" id="1-0"></button>
+                </div>
+                <div class="grid-item">
+                    <button type="button" class="grid-button valid-move" id="1-1"></button>
+                </div>
+                <div class="grid-item">
+                    <button type="button" class="grid-button valid-move" id="1-2"></button>
+                </div>
+                <div class="grid-item">
+                    <button type="button" class="grid-button valid-move" id="2-0"></button>
+                </div>
+                <div class="grid-item">
+                    <button type="button" class="grid-button valid-move" id="2-1"></button>
+                </div>
+                <div class="grid-item">
+                    <button type="button" class="grid-button valid-move" id="2-2"></button>
+                </div>
+            </div>
+        </div>
+        <button type="button" id="reset-button">Reset Game</button>
+</body>
+</html>

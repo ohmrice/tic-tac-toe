@@ -1,0 +1,67 @@
+html {
+    box-sizing: border-box;
+    font-family: 'Ubuntu', sans-serif;
+    
+}
+
+:root {
+    --cell-min-wh: calc(300px / 3);
+    --cell-max-wh: calc(500px / 3);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.gameboard-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 550px;
+    height: 550px;
+    background-color: black;
+
+}
+
+.gameboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(var(--cell-min-wh), var(--cell-max-wh)));
+    grid-template-rows: repeat(3, minmax(var(--cell-min-wh), var(--cell-max-wh)));
+    gap: 7px;
+}
+
+.grid-item {   
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+}
+
+button.grid-button {
+    font-family: 'RedkostComicRegular', sans-serif;
+    flex: 1;
+    font-size: 8rem;
+    background-color: rgb(247, 241, 233);
+    cursor: pointer;
+}
+
+button.grid-button:disabled {
+    color: black;
+    cursor: default;
+}
+
+.grid-item > p.sub {
+    position: absolute;
+    bottom: 110px;
+    font-size: 1.5rem;
+}
+
+#reset-button {
+    visibility: hidden;
+    margin-top: 4rem;
+    font-size: 2rem;
+    font-family: inherit;
+}
