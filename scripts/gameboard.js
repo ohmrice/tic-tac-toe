@@ -7,6 +7,7 @@ export const GameBoard = (() => {
     let currentPlayer = playerOne;
     let _otherPlayer;
     let isOngoing = true;
+    let difficulty;
 
     const gameArray = [
         [null,null,null],
@@ -77,6 +78,10 @@ export const GameBoard = (() => {
         const validCells = document.querySelectorAll(".valid-move");
         validCells.forEach((cell) => cell.disabled = false);
     }
+
+    function setDifficulty(diffLevel) {
+        difficulty = diffLevel;
+    }
     
     function gameOver() {
         disableValidCells();
@@ -115,37 +120,25 @@ export const GameBoard = (() => {
         currentPlayer = playerTwo;
         _otherPlayer = playerOne;
 
-        let best = Infinity;
-        let bestMove = {
-            row: -1,
-            col: -1,
+        let decisionSuccess;
+
+        switch(difficulty) {
+            case 'easy':
+                decisionSuccess = 0;
+                break;
+            case 'medium':
+                decisionSuccess = Math.floor(Math.random() * (85 - 45) + 45);
+                break;
+            case 'hard':
+                decisionSuccess = Math.floor(Math.random() * (100 - 60) + 60);
+                break;
+            case 'minimax':
+                decisionSuccess = 100;
+                break;
         }
-        /*  find empty cells and find best move for AI
-            using the minimax function
-        */
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-                if (gameArray[i][j] === null) {
-                    //mark the board to set board state
-                    gameArray[i][j] = currentPlayer.marker;
-                    //pass the current state of the board be evaluated by minimax function
-                    let currentMove = minimax(gameArray, 0, true);
-                    //undo the state
-                    gameArray[i][j] = null;
-                    //check if the move value is better than best value
-                    if (currentMove < best) {
-                        bestMove.row = i;
-                        bestMove.col = j;
-                        best = currentMove;
-                    }
-                }
-            }
-        }
-        const cell = document.getElementById(`${bestMove.row}-${bestMove.col}`);
-        _mark(currentPlayer, cell);
-        _enableValidCells();
-    
-        /*  let randomI = 0;
+        if (0 <= decisionSuccess && decisionSuccess <= 70) {
+            console.log(`decision success: ${decisionSuccess}% a guess`);
+            let randomI = 0;
             let randomJ = 0;
             do {
                 randomI = Math.floor(Math.random() * 3);
@@ -153,9 +146,41 @@ export const GameBoard = (() => {
             } while (gameArray[randomI][randomJ]);
             const cell = document.getElementById(`${randomI}-${randomJ}`);
             _mark(currentPlayer, cell);
-            _enableValidCells(); */
+            _enableValidCells();
+        } else if (decisionSuccess >= 71 && decisionSuccess <= 100) {
+            console.log(`decision success: ${decisionSuccess}% smart move`);
+            let best = Infinity;
+            let bestMove = {
+                row: -1,
+                col: -1,
+            }
+            /*  find empty cells and find best move for AI
+                using the minimax function
+            */
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (gameArray[i][j] === null) {
+                        //mark the board to set board state
+                        gameArray[i][j] = currentPlayer.marker;
+                        //pass the current state of the board be evaluated by minimax function
+                        let currentMove = minimax(gameArray, 0, true);
+                        //undo the state
+                        gameArray[i][j] = null;
+                        //check if the move value is better than best value
+                        if (currentMove < best) {
+                            bestMove.row = i;
+                            bestMove.col = j;
+                            best = currentMove;
+                        }
+                    }
+                }
+            }
+            const cell = document.getElementById(`${bestMove.row}-${bestMove.col}`);
+            _mark(currentPlayer, cell);
+            _enableValidCells();
+        }       
     }
-    return { gameArray, currentPlayer, resetValues };
+    return { gameArray, currentPlayer, difficulty, resetValues, setDifficulty };
 })();
 
 

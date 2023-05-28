@@ -6,7 +6,7 @@ export const displayController = (() => {
     const _statsText = document.getElementById('stats-text');
     const _resetBtn = document.getElementById('reset-button');
     _resetBtn.addEventListener('click', _resetGame);
-    _infoBtn.addEventListener('click', _submitName);
+    _infoBtn.addEventListener('click', _submitInfo);
 
     const render = () => {
         for (let i = 0; i < GameBoard.gameArray.length; i++) {
@@ -34,11 +34,14 @@ export const displayController = (() => {
         gameBoard.style.filter = "none";
     }
 
-    function _submitName() {
+    function _submitInfo() {
         const playerName = document.getElementById('name-input');
+        const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
         playerOne.name = playerName.value;
+        GameBoard.setDifficulty(difficulty);
         infoToggle();
         _statsText.textContent = `${GameBoard.currentPlayer.name}'s turn`;
+        
     }
 
     function _resetGame() {
