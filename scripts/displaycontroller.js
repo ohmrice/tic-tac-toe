@@ -1,6 +1,13 @@
 import { GameBoard } from './gameboard.js';
+import { playerOne, playerTwo } from './player.js';
 
 export const displayController = (() => {
+    const _infoBtn = document.getElementById('submit-name');
+    const _statsText = document.getElementById('stats-text');
+    const _resetBtn = document.getElementById('reset-button');
+    _resetBtn.addEventListener('click', _resetGame);
+    _infoBtn.addEventListener('click', _submitName);
+
     const render = () => {
         for (let i = 0; i < GameBoard.gameArray.length; i++) {
             for (let j = 0; j < GameBoard.gameArray[i].length; j++) {
@@ -10,13 +17,13 @@ export const displayController = (() => {
         }     
     }
 
-    const displayGameStats = (player, isOngoing, statsText, winner = null) => {
+    const displayGameStats = (player, isOngoing, winner = null) => {
         if (winner && !isOngoing) {
-            statsText.textContent = `${winner} wins!`;
+            _statsText.textContent = `${winner} wins!`;
         } else if (!winner && !isOngoing){
-            statsText.textContent = "It's a tie!";
+            _statsText.textContent = "It's a tie!";
         } else {
-            statsText.textContent = `${player}'s turn:`;
+            _statsText.textContent = `${player}'s turn:`;
         }
     }
     
@@ -26,5 +33,23 @@ export const displayController = (() => {
         infoContainer.style.display = "none";
         gameBoard.style.filter = "none";
     }
-    return { render, displayGameStats, infoToggle };
+
+    function _submitName() {
+        const playerName = document.getElementById('name-input');
+        playerOne.name = playerName.value;
+        infoToggle();
+        _statsText.textContent = `${GameBoard.currentPlayer.name}'s turn`;
+    }
+
+    function _resetGame() {
+        GameBoard.resetValues();
+        render();
+        _statsText.textContent = `${GameBoard.currentPlayer.name}'s turn`;
+        _resetBtn.style.visibility = 'hidden';
+    }
+    
+    function resetButton() {
+        _resetBtn.style.visibility = 'visible';
+    }
+    return { render, displayGameStats, infoToggle, resetButton };
 })();

@@ -4,9 +4,9 @@ import { minimax, hasValidMoves, checkWin } from './minimax.js';
 
 export const GameBoard = (() => {
     let _isSinglePlayer = true;
-    let _currentPlayer = playerOne;
+    let currentPlayer = playerOne;
     let _otherPlayer;
-    let _isOngoing = true;
+    let isOngoing = true;
 
     const gameArray = [
         [null,null,null],
@@ -15,52 +15,41 @@ export const GameBoard = (() => {
     ];
     //bind HTML elements
     const cells = document.querySelectorAll(".grid-button");
-    const _resetBtn = document.getElementById('reset-button');
-    const _infoBtn = document.getElementById('submit-name');
-    const _statsText = document.getElementById('stats-text');
+    
     //add event listeners
     cells.forEach((cell) => cell.addEventListener("click", () => {
         _playGame(cell);
     }));
-    _resetBtn.addEventListener('click', _resetGame);
-    _infoBtn.addEventListener('click', _submitName);
-    
-    function _submitName() {
-        const playerName = document.getElementById('name-input');
-        playerOne.name = playerName.value;
-        displayController.infoToggle();
-        _statsText.textContent = `${_currentPlayer.name}'s turn`;
-    }
 
     function _playGame(cell) {
         if(_isSinglePlayer) {
-            _currentPlayer = playerOne;
+            currentPlayer = playerOne;
             _otherPlayer = playerTwo;
             _mark(playerOne, cell);
-            if (checkWin(gameArray) === 'X') {
-                _gameOver();
-                displayController.displayGameStats(_otherPlayer.name, _isOngoing, _statsText, _currentPlayer.name);
+            if (checkWin(gameArray) === playerOne.marker) {
+                gameOver();
+                displayController.displayGameStats(_otherPlayer.name, isOngoing, currentPlayer.name);
             } else if (checkWin(gameArray) === 'tie'){
-                _gameOver();
-                displayController.displayGameStats(_otherPlayer.name, _isOngoing, _statsText);
+                gameOver();
+                displayController.displayGameStats(_otherPlayer.name, isOngoing);
             } else {
-                displayController.displayGameStats(_otherPlayer.name, _isOngoing, _statsText);
+                displayController.displayGameStats(_otherPlayer.name, isOngoing);
             };
-            if (hasValidMoves(gameArray) && _isOngoing) {
-                _disableValidCells();
+            if (hasValidMoves && isOngoing) {
+                disableValidCells();
                 setTimeout(() => {
                     _computerTurn();
-                    if (checkWin(gameArray) === 'O') {
-                        _gameOver();
-                        displayController.displayGameStats(_otherPlayer.name, _isOngoing, _statsText, _currentPlayer.name);
+                    if (checkWin(gameArray) === playerTwo.marker) {
+                        gameOver();
+                        displayController.displayGameStats(_otherPlayer.name, isOngoing, currentPlayer.name);
                     } else if (checkWin(gameArray) === 'tie'){
-                        _gameOver();
-                        displayController.displayGameStats(_otherPlayer.name, _isOngoing, _statsText);
+                        gameOver();
+                        displayController.displayGameStats(_otherPlayer.name, isOngoing);
                     } else {
-                        displayController.displayGameStats(_otherPlayer.name, _isOngoing, _statsText);
+                        displayController.displayGameStats(_otherPlayer.name, isOngoing);
                     }
-                }, 1000);
-            }
+                }, 1200);
+            }       
         } else {
             let _isTurn = true;
             _checkTurn(cell, _isTurn);
@@ -70,16 +59,16 @@ export const GameBoard = (() => {
     //for two human players
     function _checkTurn(cell, isTurn) {
         if (isTurn) {
-            _currentPlayer = playerOne;
+            currentPlayer = playerOne;
             isTurn = false;
         } else {
-            _currentPlayer = playerTwo;
+            currentPlayer = playerTwo;
             isTurn = true;
         }
-        _mark(cell, _currentPlayer);
+        _mark(cell, currentPlayer);
     }
 
-    function _disableValidCells() {
+    function disableValidCells() {
         const validCells = document.querySelectorAll(".valid-move");
         validCells.forEach((cell) => cell.disabled = true);
     }
@@ -87,7 +76,29 @@ export const GameBoard = (() => {
     function _enableValidCells() {
         const validCells = document.querySelectorAll(".valid-move");
         validCells.forEach((cell) => cell.disabled = false);
-    }    
+    }
+    
+    function gameOver() {
+        disableValidCells();
+        displayController.resetButton();
+        isOngoing = false;
+    }
+
+    function resetValues() {
+        //reset all array values
+        for (let i = 0; i < gameArray.length; i++) {
+            for (let j = 0; j < gameArray[i].length; j++) {
+                gameArray[i][j] = null;  
+            }
+        }
+        
+        cells.forEach((cell) => {
+            cell.disabled = false;
+            cell.classList.add('valid-move');
+        });
+        isOngoing = true;
+        currentPlayer = playerOne;
+    }
 
     function _mark(player, cell) {
         let i = parseInt(cell.id[0]);
@@ -101,7 +112,7 @@ export const GameBoard = (() => {
     }
 
     function _computerTurn() {
-        _currentPlayer = playerTwo;
+        currentPlayer = playerTwo;
         _otherPlayer = playerOne;
 
         let best = Infinity;
@@ -116,7 +127,7 @@ export const GameBoard = (() => {
             for (let j = 0; j < 3; j++) {
                 if (gameArray[i][j] === null) {
                     //mark the board to set board state
-                    gameArray[i][j] = _currentPlayer.marker;
+                    gameArray[i][j] = currentPlayer.marker;
                     //pass the current state of the board be evaluated by minimax function
                     let currentMove = minimax(gameArray, 0, true);
                     //undo the state
@@ -131,7 +142,7 @@ export const GameBoard = (() => {
             }
         }
         const cell = document.getElementById(`${bestMove.row}-${bestMove.col}`);
-        _mark(_currentPlayer, cell);
+        _mark(currentPlayer, cell);
         _enableValidCells();
     
         /*  let randomI = 0;
@@ -141,34 +152,10 @@ export const GameBoard = (() => {
                 randomJ = Math.floor(Math.random() * 3);
             } while (gameArray[randomI][randomJ]);
             const cell = document.getElementById(`${randomI}-${randomJ}`);
-            _mark(_currentPlayer, cell);
+            _mark(currentPlayer, cell);
             _enableValidCells(); */
     }
-
-    function _gameOver() {
-        _disableValidCells();
-        _resetBtn.style.visibility = 'visible';
-        _isOngoing = false;
-    }
-
-    function _resetGame() {
-        //reset all array values
-        for (let i = 0; i < GameBoard.gameArray.length; i++) {
-            for (let j = 0; j < GameBoard.gameArray[i].length; j++) {
-                gameArray[i][j] = null;  
-            }
-        }
-        displayController.render();
-        cells.forEach((cell) => {
-            cell.disabled = false;
-            cell.classList.add('valid-move');
-        });
-        _isOngoing = true;
-        _currentPlayer = playerOne;
-        _statsText.textContent = `${_currentPlayer.name}'s turn`;
-        _resetBtn.style.visibility = 'hidden';
-    }
-    return { gameArray };
+    return { gameArray, currentPlayer, resetValues };
 })();
 
 
