@@ -166,4 +166,5 @@ button.grid-button:disabled {
     margin-top: 4rem;
     font-size: 2rem;
     font-family: inherit;
+    cursor: pointer;
 }

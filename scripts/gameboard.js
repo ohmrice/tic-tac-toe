@@ -137,7 +137,7 @@ export const GameBoard = (() => {
                 break;
         }
         if (0 <= decisionSuccess && decisionSuccess <= 70) {
-            console.log(`decision success: ${decisionSuccess}% a guess`);
+            //decisionSuccess 0-70%: computer will make a random guess
             let randomI = 0;
             let randomJ = 0;
             do {
@@ -148,7 +148,8 @@ export const GameBoard = (() => {
             _mark(currentPlayer, cell);
             _enableValidCells();
         } else if (decisionSuccess >= 71 && decisionSuccess <= 100) {
-            console.log(`decision success: ${decisionSuccess}% smart move`);
+            /*decisionSuccess 71-100%: computer will make a smart move
+            using the minimax algorithm*/
             let best = Infinity;
             let bestMove = {
                 row: -1,
