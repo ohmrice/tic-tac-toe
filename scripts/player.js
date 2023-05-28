@@ -3,6 +3,6 @@ const Player = (name, marker) => {
 };
 
 let playerOne = Player('Player', 'X');
-const playerTwo = Player('Computer', 'O');
+const playerTwo = Player('Buddy Boy', 'O');
 
 export { playerOne, playerTwo };
