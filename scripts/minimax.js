@@ -67,9 +67,9 @@ function minimax(boardState, depth, isMax) {
     let winResult = checkWin(boardState);        
     //if either player wins, return score
     if (winResult === 'X') {
-        return 10;
+        return 10 - depth;
     } else if (winResult === 'O') {
-        return -10;
+        return -10 + depth;
     }
     if (winResult === 'tie') {
         return 0;
@@ -88,7 +88,7 @@ function minimax(boardState, depth, isMax) {
                 } 
             }
         }        
-        return bestScore - depth;
+        return bestScore;
     } else {
         let bestScore = Infinity;
         for (let i = 0; i < 3; i++) {
@@ -101,6 +101,6 @@ function minimax(boardState, depth, isMax) {
                 } 
             }
         }        
-        return bestScore + depth;
+        return bestScore;
     }
 }
